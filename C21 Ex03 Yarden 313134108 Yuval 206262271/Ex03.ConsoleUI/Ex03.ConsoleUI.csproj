@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0137CE2B-BA91-4610-9EEE-D3FED0058DBF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Ex03.GarageLogic</RootNamespace>
-    <AssemblyName>Ex03.GarageLogic</AssemblyName>
+    <ProjectGuid>{6E3C0BF0-699F-439D-890A-19A1685390A3}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Ex03.ConsoleUI</RootNamespace>
+    <AssemblyName>Ex03.ConsoleUI</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,20 +32,29 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConsoleUI.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElectricEnergy.cs" />
-    <Compile Include="EnergyManager.cs" />
-    <Compile Include="FuelEnergy.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Truck.cs" />
-    <Compile Include="Vehicle.cs" />
-    <Compile Include="Wheel.cs" />
+    <ProjectReference Include="..\Ex03.GarageLogic\Ex03.GarageLogic.csproj">
+      <Project>{0137ce2b-ba91-4610-9eee-d3fed0058dbf}</Project>
+      <Name>Ex03.GarageLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
