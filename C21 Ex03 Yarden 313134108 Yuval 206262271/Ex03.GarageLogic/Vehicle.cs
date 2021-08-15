@@ -44,6 +44,14 @@ namespace Ex03.GarageLogic
         {
         }
 
+        public List<Wheel> Wheels
+        {
+            get
+            {
+                return m_Wheels;
+            }
+        }
+
         public abstract string[] GetParamsQuestions();
 
         public abstract void InitParams(string i_Params);

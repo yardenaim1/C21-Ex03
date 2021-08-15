@@ -15,6 +15,56 @@ namespace Ex03.GarageLogic
             this.m_GarageVehicles = new Dictionary<string, VehicleInfo>();
         }
 
+        public string GetPlateNumbers(VehicleInfo.eStateInGarage? i_State)
+        {
+            StringBuilder plateNumbers = new StringBuilder(string.Empty);
+            int platesNumbering = 1;
+
+            foreach(KeyValuePair<string, VehicleInfo> vehicle in this.m_GarageVehicles)
+            {
+                if (i_State == null || vehicle.Value.StateInGarage == i_State)
+                {
+                    plateNumbers.AppendFormat(
+                        @"{0}. {1}{2}",
+                        platesNumbering++,
+                        vehicle.Value.GetVehicle.LicenseNumber,
+                        Environment.NewLine);
+                }
+            }
+
+            if (string.IsNullOrEmpty(plateNumbers.ToString()))
+            {
+                plateNumbers.AppendLine("No plate numbers to show.");
+            }
+
+            return plateNumbers.ToString();
+        }
+
+        public void ChangeVehicleState(VehicleInfo.eStateInGarage i_NewState, string i_PlateNumber)
+        {
+            if (!this.m_GarageVehicles.ContainsKey(i_PlateNumber))
+            {
+                // todo : trow "No matching vehicle found"
+            }
+
+            this.m_GarageVehicles[i_PlateNumber].StateInGarage = i_NewState;
+        }
+
+        public void FillUpAirPressureInWheels(string i_PlateNumber)
+        {
+            if (!this.m_GarageVehicles.ContainsKey(i_PlateNumber))
+            {
+                // todo : trow "No matching vehicle found"
+            }
+
+            List<Wheel> wheelList = this.m_GarageVehicles[i_PlateNumber].GetVehicle.Wheels;
+
+            foreach(Wheel wheel in wheelList)
+            {
+                wheel.FillAirPressureToMax();
+            }
+        }
+
         public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_isExists)
         {
             o_isExists = isExistsInGarage(i_Vehicle.LicenseNumber);
