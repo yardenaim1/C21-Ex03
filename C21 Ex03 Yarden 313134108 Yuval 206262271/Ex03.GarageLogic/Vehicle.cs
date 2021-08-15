@@ -21,6 +21,14 @@ namespace Ex03.GarageLogic
             this.m_EnergyManager = i_EnergyManager;
         }
 
+        public string LicenseNumber
+        {
+            get
+            {
+                return this.m_LicenseNumber;
+            }
+        }
+
         public virtual void InitWheels(
             string i_ManufacturerName,
             float i_CurrentAirPressure)

@@ -2,6 +2,10 @@
 {
     public class ElectricEnergy : EnergyManager
     {
+        public ElectricEnergy()
+        {
+        }
+
         public ElectricEnergy(float i_MaxBatteryHours ) :
             base(i_MaxBatteryHours)
         {
