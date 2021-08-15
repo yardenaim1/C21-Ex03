@@ -2,23 +2,37 @@
 {
     public abstract class EnergyManager
     {
-        protected readonly float r_MaxEnergyCapacity;
+        protected float m_MaxEnergyCapacity;
         protected float m_CurrentEnergy;
+
+        protected EnergyManager()
+        {
+
+        }
 
         protected EnergyManager(float i_MaxCapacity)
         {
-            this.r_MaxEnergyCapacity = i_MaxCapacity;
+            this.m_MaxEnergyCapacity = i_MaxCapacity;
         }
 
-        protected float MaxEnergyCapacity
+        public virtual void FillEnergy(float i_ToFill)
+        {
+        }
+
+        public float MaxEnergyCapacity
         {
             get
             {
-                return this.r_MaxEnergyCapacity;
+                return this.m_MaxEnergyCapacity;
+            }
+
+            set
+            {
+                this.m_MaxEnergyCapacity = value;
             }
         }
 
-        protected float CurrentEnergy
+        public float CurrentEnergy
         {
             get
             {
@@ -33,7 +47,7 @@
 
         public float GetEnergyPercentage()
         {
-            return this.m_CurrentEnergy / this.r_MaxEnergyCapacity * 100;
+            return this.m_CurrentEnergy / this.m_MaxEnergyCapacity * 100;
         }
     }
 }

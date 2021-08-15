@@ -26,6 +26,10 @@
             {
                 return MaxEnergyCapacity;
             }
+            set
+            {
+                this.m_MaxEnergyCapacity = value;
+            }
         }
 
         public void Charge(float i_HoursToFill) 

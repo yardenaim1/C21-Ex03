@@ -1,9 +1,9 @@
-﻿namespace Ex03.GarageLogic
-{
-    using System;
-    using System.Linq;
-    using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text;
 
+namespace Ex03.GarageLogic
+{
     public class Truck : Vehicle
     {
         private const int k_NumberOfWheels = 16;
@@ -14,26 +14,30 @@
         private bool m_IsDrivesHazardousMaterials;
         private float m_MaximumCarryingWeight;
 
-        public Truck(string i_ModelName, string i_LicenseNumber)
-          : base(i_ModelName, i_LicenseNumber, k_NumberOfWheels)
+        public Truck(string i_ModelName, string i_LicenseNumber, EnergyManager i_EnergyManager)
+          : base(i_ModelName, i_LicenseNumber, k_NumberOfWheels, i_EnergyManager)
         {
-            this.m_EnergyManager = new FuelEnergy(k_FuelType, k_MaxFuelCapacity);
+            ((FuelEnergy)m_EnergyManager).MaxFuel = k_MaxFuelCapacity;
+            ((FuelEnergy)m_EnergyManager).FuelType = k_FuelType;
         }
 
-        public override void InitWheelsAndEnergy(
+        public override void InitWheels(
             string i_ManufacturerName,
-            float i_CurrentAirPressure,
-            float i_CurrentEnergy)
+            float i_CurrentAirPressure)
         {
-            for(int i = 0; i < k_NumberOfWheels; i++) 
+            for (int i = 0; i < k_NumberOfWheels; i++)
             {
                 this.m_Wheels.Add(new Wheel());
-                this.m_Wheels[i].ManufacturerName = i_ManufacturerName;
                 this.m_Wheels[i].MaxAirPressure = k_MaxWheelsAirPressure;
-                this.m_Wheels[i].CurrentAirPressure = i_CurrentEnergy;
             }
 
-            ((FuelEnergy)this.m_EnergyManager).AddFuel(i_CurrentEnergy, k_FuelType);
+            base.InitWheels(i_ManufacturerName, i_CurrentAirPressure);
+        }
+
+        public override void InitEnergySource(float i_CurrentEnergy)
+        {
+            ((FuelEnergy)m_EnergyManager).AddFuel(i_CurrentEnergy, k_FuelType);
+            this.m_PercentageEnergyRemaining = this.m_EnergyManager.GetEnergyPercentage();
         }
 
         public bool IsDrivesHazardousMaterials
@@ -86,7 +90,7 @@
             return truckSeparateParamsQuestions;
         }
 
-        public override void InitParams(string i_Params) // maybe better to create operation that this method can get just valid parameters - so we should check it before we use this init method
+        public override void InitParams(string i_Params) 
         {
             string[] givenParams = i_Params.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -110,6 +114,22 @@
             // === float.TryParse(givenParams[1], out this.m_MaximumCarryingWeight);                                                ===
             // ===                                                                                                                  ===
             // === ================================================================================================================ ===
+        }
+
+        public override string ToString()
+        {
+            StringBuilder resString = new StringBuilder(base.ToString());
+
+            resString.AppendFormat(
+                @"Number of wheels - {0}
+Is Drives Hazardous Materials - {1}
+Maximum Carrying Weight - {2}
+",
+                k_NumberOfWheels,
+                this.m_IsDrivesHazardousMaterials ? "yes" : "no",
+                m_MaximumCarryingWeight);
+           
+            return resString.ToString();
         }
     }
 }

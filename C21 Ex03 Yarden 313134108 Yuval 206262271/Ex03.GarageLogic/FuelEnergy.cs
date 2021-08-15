@@ -2,7 +2,11 @@
 {
    public sealed class FuelEnergy : EnergyManager
    {
-       private readonly eFuelType r_FuelType;
+       private eFuelType r_FuelType;
+
+       public FuelEnergy()
+       {
+       }
 
        public FuelEnergy(eFuelType i_FuelType, float i_MaxFuel) :
            base(i_MaxFuel)
@@ -29,6 +33,10 @@
            {
                return MaxEnergyCapacity;
            }
+           set
+           {
+               MaxEnergyCapacity = value;
+           }
        }
 
        public eFuelType FuelType
@@ -37,7 +45,16 @@
            {
                return this.r_FuelType;
            }
+           set
+           {
+               this.r_FuelType = value;
+           }
        }
+
+       //public override void FillEnergy(float i_ToFill)
+       //{
+       //    AddFuel(i_ToFill);
+       //}
 
        public void AddFuel(float i_ToFill, eFuelType i_FuelType)
        {

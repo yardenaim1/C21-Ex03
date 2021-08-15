@@ -1,32 +1,38 @@
 ﻿using System.Collections.Generic;
-
+using System;
+using System.Reflection.Emit;
+using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    using System;
-    using System.Reflection.Emit;
-    using System.Text;
-
     public abstract class Vehicle
     {
         private string m_ModelName;
         private string m_LicenseNumber;
-        private float m_PercentageEnergyRemaining;
-        public List<Wheel> m_Wheels = null;
+        protected float m_PercentageEnergyRemaining;
+        protected List<Wheel> m_Wheels = null;
         protected EnergyManager m_EnergyManager = null;
 
-        internal Vehicle(string i_ModelName, string i_LicenseNumber, int i_NumOfWheels)
+        internal Vehicle(string i_ModelName, string i_LicenseNumber, int i_NumOfWheels, EnergyManager i_EnergyManager)
         {
             this.m_ModelName = i_ModelName;
             this.m_LicenseNumber = i_LicenseNumber;
             this.m_Wheels = new List<Wheel>(i_NumOfWheels);
-
+            this.m_EnergyManager = i_EnergyManager;
         }
 
-        public virtual void InitWheelsAndEnergy(
+        public virtual void InitWheels(
             string i_ManufacturerName,
-            float i_CurrentAirPressure,
-            float i_CurrentEnergy)
+            float i_CurrentAirPressure)
+        {
+            foreach(Wheel wheel in this.m_Wheels)
+            {
+                wheel.ManufacturerName = i_ManufacturerName;
+                wheel.FillAirPressure(i_CurrentAirPressure);
+            }
+        }
+
+        public virtual void InitEnergySource(float i_CurrentEnergy)
         {
         }
 
@@ -42,8 +48,9 @@ Model - {1}
 ",
                                     this.m_LicenseNumber,
                                     this.m_ModelName));
-            resString.Append(this.m_Wheels[0].ToString();
-            resString.Append(this.m_EnergyManager.ToString();
+            resString.Append(this.m_Wheels[0].ToString());
+            resString.Append(this.m_EnergyManager.ToString());
+          
             return resString.ToString();
         }
     }
