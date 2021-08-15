@@ -5,6 +5,7 @@ namespace Ex03.GarageLogic
 {
     using System;
     using System.Reflection.Emit;
+    using System.Text;
 
     public abstract class Vehicle
     {
@@ -27,6 +28,23 @@ namespace Ex03.GarageLogic
             float i_CurrentAirPressure,
             float i_CurrentEnergy)
         {
+        }
+
+        public abstract string[] GetParamsQuestions();
+
+        public abstract void InitParams(string i_Params);
+
+        public override string ToString()
+        {
+            StringBuilder resString = new StringBuilder(string.Format(
+@"Plate number - {0}
+Model - {1}
+",
+                                    this.m_LicenseNumber,
+                                    this.m_ModelName));
+            resString.Append(this.m_Wheels[0].ToString();
+            resString.Append(this.m_EnergyManager.ToString();
+            return resString.ToString();
         }
     }
 }

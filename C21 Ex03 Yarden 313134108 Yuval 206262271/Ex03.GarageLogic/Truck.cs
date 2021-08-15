@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
+    using System;
+    using System.Linq;
+    using System.Text;
+
     public class Truck : Vehicle
     {
         private const int k_NumberOfWheels = 16;
@@ -36,6 +34,82 @@ namespace Ex03.GarageLogic
             }
 
             ((FuelEnergy)this.m_EnergyManager).AddFuel(i_CurrentEnergy, k_FuelType);
+        }
+
+        public bool IsDrivesHazardousMaterials
+        {
+            get
+            {
+                return m_IsDrivesHazardousMaterials;
+            }
+
+            set
+            {
+                m_IsDrivesHazardousMaterials = value;
+            }
+        }
+
+        public float MaximumCarryingWeight
+        {
+            get
+            {
+                return m_MaximumCarryingWeight;
+            }
+
+            set
+            {
+                m_MaximumCarryingWeight = value;
+            }
+        }
+
+        public FuelEnergy.eFuelType FuelType
+        {
+            get
+            {
+                return k_FuelType;
+            }
+        }
+
+        public override string[] GetParamsQuestions()
+        {
+            StringBuilder truckParamsQuestions = new StringBuilder();
+            string[] truckSeparateParamsQuestions = new string[2];
+
+            truckParamsQuestions.AppendFormat(
+                @"The truck transporting hazardous materials? ( Y / N ){0}", Environment.NewLine);
+            truckSeparateParamsQuestions[0] = truckParamsQuestions.ToString();
+            truckParamsQuestions.Clear();
+
+            truckParamsQuestions.AppendFormat(
+                @"What is the maximum Carry weight? ( in kilograms ){0}", Environment.NewLine);
+            truckSeparateParamsQuestions[1] = truckParamsQuestions.ToString();
+            return truckSeparateParamsQuestions;
+        }
+
+        public override void InitParams(string i_Params) // maybe better to create operation that this method can get just valid parameters - so we should check it before we use this init method
+        {
+            string[] givenParams = i_Params.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            if(givenParams[0].ToLower() != "y" && givenParams[0].ToLower() != "n")
+            {
+                // todo : trow exception invalid transport choice 
+            }
+
+            m_IsDrivesHazardousMaterials = givenParams[0].ToLower() == "y" ? true : false;
+
+            if (!float.TryParse(givenParams[1], out this.m_MaximumCarryingWeight))
+            {
+                // todo : trow exception invalid carry weight
+            }
+
+            // === ================================================================================================================ ===
+            // === if we choose to check the params validation before so just                                                       ===
+            // ===                                                                                                                  ===
+            // === string[] givenParams = i_Params.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);     ===
+            // === m_IsDrivesHazardousMaterials = givenParams[0].ToLower() == "y" ? true : false;                                   ===
+            // === float.TryParse(givenParams[1], out this.m_MaximumCarryingWeight);                                                ===
+            // ===                                                                                                                  ===
+            // === ================================================================================================================ ===
         }
     }
 }
