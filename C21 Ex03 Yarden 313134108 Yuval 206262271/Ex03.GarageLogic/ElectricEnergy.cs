@@ -1,5 +1,7 @@
 ﻿namespace Ex03.GarageLogic
 {
+    using System;
+
     public class ElectricEnergy : EnergyManager
     {
         public ElectricEnergy()
@@ -34,11 +36,6 @@
             {
                 this.m_MaxEnergyCapacity = value;
             }
-        }
-
-        public override void FillUpEnergy(float i_MinutesToFill)
-        {
-            Charge(i_MinutesToFill / 60);
         }
 
         public void Charge(float i_HoursToFill) 

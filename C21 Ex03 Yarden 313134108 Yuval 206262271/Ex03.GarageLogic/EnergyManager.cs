@@ -1,4 +1,6 @@
-﻿namespace Ex03.GarageLogic
+﻿using System;
+
+namespace Ex03.GarageLogic
 {
     public abstract class EnergyManager
     {
@@ -44,8 +46,6 @@
         {
             return this.m_CurrentEnergy / this.m_MaxEnergyCapacity * 100;
         }
-
-        public abstract void FillUpEnergy(float i_ToFill);
     }
 }
 

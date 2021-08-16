@@ -8,11 +8,11 @@ namespace Ex03.GarageLogic
 {
     public class Garage
     {
-        private Dictionary<string, VehicleInfo> m_GarageVehicles;
+        private readonly Dictionary<string, VehicleInfo> r_GarageVehicles;
 
         public Garage()
         {
-            this.m_GarageVehicles = new Dictionary<string, VehicleInfo>();
+            this.r_GarageVehicles = new Dictionary<string, VehicleInfo>();
         }
 
         public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_isExists)
@@ -21,14 +21,36 @@ namespace Ex03.GarageLogic
 
             if (!o_isExists)
             {
-                this.m_GarageVehicles.Add(
+                this.r_GarageVehicles.Add(
                     i_Vehicle.LicenseNumber,
                     new VehicleInfo(i_Vehicle, i_OwnerName, i_OwnerPhone));
             }
             else
             {
-                this.m_GarageVehicles[i_Vehicle.LicenseNumber].StateInGarage = VehicleInfo.eStateInGarage.Repairing;
+                this.r_GarageVehicles[i_Vehicle.LicenseNumber].StateInGarage = VehicleInfo.eStateInGarage.Repairing;
             }
+        }
+
+        public void InitWheels(string i_LicensePlateNumber, string i_ManufacturerName, float i_CurrentAirPressure)
+        {
+            if (!isExistsInGarage(i_LicensePlateNumber))
+            {
+                // todo : trow "No matching vehicle found"
+            }
+
+            Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
+            toInit.InitWheels(i_ManufacturerName, i_CurrentAirPressure);
+        }
+
+        public void InitEnergySource(string i_LicensePlateNumber, float i_CurrentEnergy)
+        {
+            if (!isExistsInGarage(i_LicensePlateNumber))
+            {
+                // todo : trow "No matching vehicle found"
+            }
+
+            Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
+            toInit.InitEnergySource(i_CurrentEnergy);
         }
 
         public string GetPlateNumbers(VehicleInfo.eStateInGarage? i_State)
@@ -36,7 +58,7 @@ namespace Ex03.GarageLogic
             StringBuilder plateNumbers = new StringBuilder(string.Empty);
             int platesNumbering = 1;
 
-            foreach(KeyValuePair<string, VehicleInfo> vehicle in this.m_GarageVehicles)
+            foreach(KeyValuePair<string, VehicleInfo> vehicle in this.r_GarageVehicles)
             {
                 if (i_State == null || vehicle.Value.StateInGarage == i_State)
                 {
@@ -56,24 +78,24 @@ namespace Ex03.GarageLogic
             return plateNumbers.ToString();
         }
 
-        public void ChangeVehicleState(VehicleInfo.eStateInGarage i_NewState, string i_PlateNumber)
+        public void ChangeVehicleState(VehicleInfo.eStateInGarage i_NewState, string i_LicensePlateNumber)
         {
-            if (!isExistsInGarage(i_PlateNumber))
+            if (!isExistsInGarage(i_LicensePlateNumber))
             {
                 // todo : trow "No matching vehicle found"
             }
 
-            this.m_GarageVehicles[i_PlateNumber].StateInGarage = i_NewState;
+            this.r_GarageVehicles[i_LicensePlateNumber].StateInGarage = i_NewState;
         }
 
-        public void FillUpAirPressureInWheels(string i_PlateNumber)
+        public void FillUpAirPressureInWheels(string i_LicensePlateNumber)
         {
-            if (!this.m_GarageVehicles.ContainsKey(i_PlateNumber))
+            if (!isExistsInGarage(i_LicensePlateNumber))
             {
                 // todo : trow "No matching vehicle found"
             }
 
-            List<Wheel> wheelList = this.m_GarageVehicles[i_PlateNumber].GetVehicle.Wheels;
+            List<Wheel> wheelList = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle.Wheels;
 
             foreach(Wheel wheel in wheelList)
             {
@@ -81,32 +103,55 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void FuelVehicle(string i_PlateNumber, FuelEnergy.eFuelType i_FuelType, float i_CountToFuel)//בצורה שמימשתי אני בכלל לא צריך סוג דלק למרות שלפי המסמך צריך לקבל את זה כפרמטר
+        public void FuelVehicle(string i_LicensePlateNumber, FuelEnergy.eFuelType i_FuelType, float i_AmountToFuel)
         {
-            if (!isExistsInGarage(i_PlateNumber))
+            if (!isExistsInGarage(i_LicensePlateNumber))
             {
                 // todo : trow "No matching vehicle found"
             }
 
-            Vehicle toFuel = this.m_GarageVehicles[i_PlateNumber].GetVehicle;
-            toFuel.EnergyManager.FillUpEnergy(i_CountToFuel);
+            Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
+            FuelEnergy toFill = toFuel.EnergyManager as FuelEnergy;
+           
+            if(toFill != null)
+            {
+                toFill.AddFuel(i_FuelType, i_AmountToFuel);
+            }
+            else
+            {
+                // to do: exception 
+            }
         }
 
-        //זהה למתודה תדלוק רכב מלבד הפרמטר של סוג דלק....מה עושים???
-        public void ChargeVehicle(string i_PlateNumber, float i_MinutesToCharge)
+        public void ChargeVehicle(string i_LicensePlateNumber, float i_MinutesToCharge)
         {
-            if (!isExistsInGarage(i_PlateNumber))
+            if (!isExistsInGarage(i_LicensePlateNumber))
             {
                 // todo : trow "No matching vehicle found"
             }
 
-            Vehicle toFuel = this.m_GarageVehicles[i_PlateNumber].GetVehicle;
-            toFuel.EnergyManager.FillUpEnergy(i_MinutesToCharge);
+            Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
+            ElectricEnergy toFill = toFuel.EnergyManager as ElectricEnergy;
+
+            if (toFill != null)
+            {
+                toFill.Charge(i_MinutesToCharge / 60);
+            }
+            else
+            {
+                // to do: exception 
+            }
         }
 
-        private bool isExistsInGarage(string i_LicenseNumber)
+        public string GetVehicleInfo(string i_LicensePlateNumber)
         {
-            return this.m_GarageVehicles.ContainsKey(i_LicenseNumber);
+            VehicleInfo vehicleInfo = this.r_GarageVehicles[i_LicensePlateNumber];
+            return vehicleInfo.ToString();
+        }
+
+        private bool isExistsInGarage(string i_LicensePlateNumber)
+        {
+            return this.r_GarageVehicles.ContainsKey(i_LicensePlateNumber);
         }
 
         public class VehicleInfo
@@ -156,6 +201,21 @@ namespace Ex03.GarageLogic
                 {
                     this.m_OwnePhoneNumber = value;
                 }
+            }
+
+            public override string ToString()
+            {
+                StringBuilder resString = new StringBuilder();
+
+                resString.AppendFormat(
+                    @"Owner Name - {0}
+State in garage - {1}
+",
+                    this.m_OwnerName,
+                    this.m_CurrentStateInGarage);
+                resString.AppendLine(this.m_Vehicle.ToString());
+
+                return resString.ToString();
             }
 
             public eStateInGarage StateInGarage

@@ -36,7 +36,7 @@ namespace Ex03.GarageLogic
 
         public override void InitEnergySource(float i_CurrentEnergy)
         {
-            ((FuelEnergy)m_EnergyManager).AddFuel(i_CurrentEnergy, k_FuelType);
+            ((FuelEnergy)m_EnergyManager).AddFuel(k_FuelType, i_CurrentEnergy);
             this.m_PercentageEnergyRemaining = this.m_EnergyManager.GetEnergyPercentage();
         }
 

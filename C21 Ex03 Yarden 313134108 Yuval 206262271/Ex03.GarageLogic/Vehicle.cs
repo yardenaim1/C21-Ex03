@@ -59,6 +59,7 @@ namespace Ex03.GarageLogic
                 return this.m_EnergyManager;
             }
         }
+
         public abstract string[] GetParamsQuestions();
 
         public abstract void InitParams(string i_Params);

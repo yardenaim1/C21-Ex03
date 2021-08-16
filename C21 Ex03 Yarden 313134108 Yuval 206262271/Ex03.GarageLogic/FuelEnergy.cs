@@ -45,18 +45,14 @@
            {
                return this.m_FuelType;
            }
+
            set
            {
                this.m_FuelType = value;
            }
        }
 
-        public override void FillUpEnergy(float i_ToFill)
-        {
-            AddFuel(i_ToFill, this.m_FuelType);
-        }
-
-        public void AddFuel(float i_ToFill, eFuelType i_FuelType)
+       public void AddFuel(eFuelType i_FuelType, float i_ToFill )
        {
            if (i_FuelType != m_FuelType)
            {

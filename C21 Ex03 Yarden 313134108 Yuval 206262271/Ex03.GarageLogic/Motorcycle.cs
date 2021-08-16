@@ -43,7 +43,7 @@ namespace Ex03.GarageLogic
         {
             if (this.m_EnergyManager is FuelEnergy)
             {
-                ((FuelEnergy)m_EnergyManager).AddFuel(i_CurrentEnergy, k_FuelType);
+                ((FuelEnergy)m_EnergyManager).AddFuel(k_FuelType, i_CurrentEnergy);
             }
             else
             {
