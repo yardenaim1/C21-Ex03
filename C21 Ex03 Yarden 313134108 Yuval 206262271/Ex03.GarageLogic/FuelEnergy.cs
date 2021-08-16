@@ -1,6 +1,8 @@
 ﻿namespace Ex03.GarageLogic
 {
-   public sealed class FuelEnergy : EnergyManager
+    using System;
+
+    public sealed class FuelEnergy : EnergyManager
    {
        private eFuelType m_FuelType;
 
@@ -56,12 +58,12 @@
        {
            if (i_FuelType != m_FuelType)
            {
-               // todo:  throw new ArgumentException(string.Format(@"Mismatch in fuel type. Type needed is {0}", r_FuelType));
+               throw new ArgumentException(string.Format(@"Mismatch in fuel type. Type needed is {0}", m_FuelType));
            }
 
            if (CurrentFuel + i_ToFill > MaxFuel || i_ToFill < 0)
            {
-               // todo:  throw new ValueOutOfRangeException(0, MaxCapacity - CurrentCapacity, "Gas Engine");
+               throw new ValueOutOfRangeException(0, MaxFuel - CurrentFuel);
            }
 
            CurrentFuel += i_ToFill;

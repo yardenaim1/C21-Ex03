@@ -94,26 +94,17 @@ namespace Ex03.GarageLogic
         {
             string[] givenParams = i_Params.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            if(givenParams[0].ToLower() != "y" && givenParams[0].ToLower() != "n")
+            if(givenParams[0].ToUpper() != "Y" && givenParams[0].ToUpper() != "N")
             {
-                // todo : trow exception invalid transport choice 
+                throw new ArgumentException("Invalid transport choice");
             }
 
             m_IsDrivesHazardousMaterials = givenParams[0].ToLower() == "y" ? true : false;
 
             if (!float.TryParse(givenParams[1], out this.m_MaximumCarryingWeight))
             {
-                // todo : trow exception invalid carry weight
+                throw new FormatException("Invalid carry weight");
             }
-
-            // === ================================================================================================================ ===
-            // === if we choose to check the params validation before so just                                                       ===
-            // ===                                                                                                                  ===
-            // === string[] givenParams = i_Params.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);     ===
-            // === m_IsDrivesHazardousMaterials = givenParams[0].ToLower() == "y" ? true : false;                                   ===
-            // === float.TryParse(givenParams[1], out this.m_MaximumCarryingWeight);                                                ===
-            // ===                                                                                                                  ===
-            // === ================================================================================================================ ===
         }
 
         public override string ToString()

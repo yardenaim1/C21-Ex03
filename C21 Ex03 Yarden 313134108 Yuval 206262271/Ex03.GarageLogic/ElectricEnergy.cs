@@ -42,7 +42,7 @@
         { 
             if (CurrentHoursLeft + i_HoursToFill > MaxBatteryHours || i_HoursToFill < 0)
             {
-                // todo:  throw new ValueOutOfRangeException(0, MaxCapacity - CurrentCapacity, "Gas Engine");
+                throw new ValueOutOfRangeException(0, MaxBatteryHours - CurrentHoursLeft);
             }
 
             CurrentHoursLeft += i_HoursToFill;

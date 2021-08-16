@@ -17,17 +17,17 @@ namespace Ex03.GarageLogic
 
         public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_isExists)
         {
-            o_isExists = isExistsInGarage(i_Vehicle.LicenseNumber);
+            o_isExists = isExistsInGarage(i_Vehicle.LicensePlateNumber);
 
             if (!o_isExists)
             {
                 this.r_GarageVehicles.Add(
-                    i_Vehicle.LicenseNumber,
+                    i_Vehicle.LicensePlateNumber,
                     new VehicleInfo(i_Vehicle, i_OwnerName, i_OwnerPhone));
             }
             else
             {
-                this.r_GarageVehicles[i_Vehicle.LicenseNumber].StateInGarage = VehicleInfo.eStateInGarage.Repairing;
+                this.r_GarageVehicles[i_Vehicle.LicensePlateNumber].StateInGarage = VehicleInfo.eStateInGarage.Repairing;
             }
         }
 
@@ -46,7 +46,7 @@ namespace Ex03.GarageLogic
         {
             if (!isExistsInGarage(i_LicensePlateNumber))
             {
-                // todo : trow "No matching vehicle found"
+                throw new ArgumentException("No matching vehicle found");
             }
 
             Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
@@ -65,7 +65,7 @@ namespace Ex03.GarageLogic
                     plateNumbers.AppendFormat(
                         @"{0}. {1}{2}",
                         platesNumbering++,
-                        vehicle.Value.GetVehicle.LicenseNumber,
+                        vehicle.Value.GetVehicle.LicensePlateNumber,
                         Environment.NewLine);
                 }
             }
@@ -82,7 +82,7 @@ namespace Ex03.GarageLogic
         {
             if (!isExistsInGarage(i_LicensePlateNumber))
             {
-                // todo : trow "No matching vehicle found"
+                throw new ArgumentException("No matching vehicle found");
             }
 
             this.r_GarageVehicles[i_LicensePlateNumber].StateInGarage = i_NewState;
@@ -92,7 +92,7 @@ namespace Ex03.GarageLogic
         {
             if (!isExistsInGarage(i_LicensePlateNumber))
             {
-                // todo : trow "No matching vehicle found"
+                throw new ArgumentException("No matching vehicle found");
             }
 
             List<Wheel> wheelList = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle.Wheels;
@@ -107,7 +107,7 @@ namespace Ex03.GarageLogic
         {
             if (!isExistsInGarage(i_LicensePlateNumber))
             {
-                // todo : trow "No matching vehicle found"
+                throw new ArgumentException("No matching vehicle found");
             }
 
             Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
@@ -119,7 +119,7 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                // to do: exception 
+                throw new ArgumentException("Vehicle requested is not fuel operated");
             }
         }
 
@@ -127,7 +127,7 @@ namespace Ex03.GarageLogic
         {
             if (!isExistsInGarage(i_LicensePlateNumber))
             {
-                // todo : trow "No matching vehicle found"
+                throw new ArgumentException("No matching vehicle found");
             }
 
             Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
@@ -139,12 +139,17 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                // to do: exception 
+                throw new ArgumentException("Vehicle requested is not electrically operated");
             }
         }
 
         public string GetVehicleInfo(string i_LicensePlateNumber)
         {
+            if (!isExistsInGarage(i_LicensePlateNumber))
+            {
+                throw new ArgumentException("No matching vehicle found");
+            }
+
             VehicleInfo vehicleInfo = this.r_GarageVehicles[i_LicensePlateNumber];
             return vehicleInfo.ToString();
         }

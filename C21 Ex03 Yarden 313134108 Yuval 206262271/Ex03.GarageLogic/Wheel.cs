@@ -65,7 +65,7 @@
         {
             if(this.m_CurrentAirPressure + i_AirToFill > this.m_MaxAirPressure)
             {
-                //todo :throw exeption
+                throw new ValueOutOfRangeException(0, this.m_MaxAirPressure);
             }
 
             CurrentAirPressure += i_AirToFill;

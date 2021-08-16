@@ -8,24 +8,24 @@ namespace Ex03.GarageLogic
     public abstract class Vehicle
     {
         private string m_ModelName;
-        private string m_LicenseNumber;
+        private string m_LicensePlateNumber;
         protected float m_PercentageEnergyRemaining;
         protected List<Wheel> m_Wheels = null;
         protected EnergyManager m_EnergyManager = null;
 
-        internal Vehicle(string i_ModelName, string i_LicenseNumber, int i_NumOfWheels, EnergyManager i_EnergyManager)
+        internal Vehicle(string i_ModelName, string i_LicensePlateNumber, int i_NumOfWheels, EnergyManager i_EnergyManager)
         {
             this.m_ModelName = i_ModelName;
-            this.m_LicenseNumber = i_LicenseNumber;
+            this.m_LicensePlateNumber = i_LicensePlateNumber;
             this.m_Wheels = new List<Wheel>(i_NumOfWheels);
             this.m_EnergyManager = i_EnergyManager;
         }
 
-        public string LicenseNumber
+        public string LicensePlateNumber
         {
             get
             {
-                return this.m_LicenseNumber;
+                return this.m_LicensePlateNumber;
             }
         }
 
@@ -40,7 +40,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public virtual void InitEnergySource(float i_CurrentEnergy)
+        public virtual void InitEnergySource(float i_CurrentEnergy) // maybe abstract better?????
         {
         }
 
@@ -70,7 +70,7 @@ namespace Ex03.GarageLogic
 @"Plate number - {0}
 Model - {1}
 ",
-                                    this.m_LicenseNumber,
+                                    this.m_LicensePlateNumber,
                                     this.m_ModelName));
             resString.Append(this.m_Wheels[0].ToString());
             resString.Append(this.m_EnergyManager.ToString());

@@ -82,12 +82,12 @@ namespace Ex03.GarageLogic
 
             if (!Enum.TryParse(givenParams[0], out m_LicenseType))
             {
-                //todo: exception
+                throw new FormatException("Invalid license type");
             }
 
             if (!int.TryParse(givenParams[1], out m_CubicCapacity))
             {
-                //todo: exception
+                throw new FormatException("Invalid cubic capacity");
             }
         }
 

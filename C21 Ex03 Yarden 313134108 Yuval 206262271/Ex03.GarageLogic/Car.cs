@@ -89,12 +89,12 @@ namespace Ex03.GarageLogic
 
             if(!Enum.TryParse(givenParams[0], out m_Color))
             {
-                //todo: exception
+                throw new FormatException("Invalid color option");
             }
 
-            if(!Enum.TryParse(givenParams[1], out m_NumOfDoors))
+            if (!Enum.TryParse(givenParams[1], out m_NumOfDoors))
             {
-                //todo: exception
+                throw new FormatException("Invalid number of doors");
             }
         }
 

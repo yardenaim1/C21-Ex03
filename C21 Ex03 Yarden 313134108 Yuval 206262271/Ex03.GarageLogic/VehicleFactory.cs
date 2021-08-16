@@ -1,5 +1,7 @@
 ﻿namespace Ex03.GarageLogic
 {
+    using System;
+
     public class VehicleFactory
     {
         public enum eVehicleTypes
@@ -49,8 +51,7 @@
 
                 default:
                     {
-                        // To do: exeption
-                        break;
+                        throw new ArgumentException("Invalid vehicle type");
                     }
             }
 
