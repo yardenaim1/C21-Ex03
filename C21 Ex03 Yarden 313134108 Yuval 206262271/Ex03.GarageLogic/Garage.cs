@@ -15,6 +15,22 @@ namespace Ex03.GarageLogic
             this.m_GarageVehicles = new Dictionary<string, VehicleInfo>();
         }
 
+        public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_isExists)
+        {
+            o_isExists = isExistsInGarage(i_Vehicle.LicenseNumber);
+
+            if (!o_isExists)
+            {
+                this.m_GarageVehicles.Add(
+                    i_Vehicle.LicenseNumber,
+                    new VehicleInfo(i_Vehicle, i_OwnerName, i_OwnerPhone));
+            }
+            else
+            {
+                this.m_GarageVehicles[i_Vehicle.LicenseNumber].StateInGarage = VehicleInfo.eStateInGarage.Repairing;
+            }
+        }
+
         public string GetPlateNumbers(VehicleInfo.eStateInGarage? i_State)
         {
             StringBuilder plateNumbers = new StringBuilder(string.Empty);
@@ -42,7 +58,7 @@ namespace Ex03.GarageLogic
 
         public void ChangeVehicleState(VehicleInfo.eStateInGarage i_NewState, string i_PlateNumber)
         {
-            if (!this.m_GarageVehicles.ContainsKey(i_PlateNumber))
+            if (!isExistsInGarage(i_PlateNumber))
             {
                 // todo : trow "No matching vehicle found"
             }
@@ -65,20 +81,27 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_isExists)
+        public void FuelVehicle(string i_PlateNumber, FuelEnergy.eFuelType i_FuelType, float i_CountToFuel)//בצורה שמימשתי אני בכלל לא צריך סוג דלק למרות שלפי המסמך צריך לקבל את זה כפרמטר
         {
-            o_isExists = isExistsInGarage(i_Vehicle.LicenseNumber);
+            if (!isExistsInGarage(i_PlateNumber))
+            {
+                // todo : trow "No matching vehicle found"
+            }
 
-            if (!o_isExists)
+            Vehicle toFuel = this.m_GarageVehicles[i_PlateNumber].GetVehicle;
+            toFuel.EnergyManager.FillUpEnergy(i_CountToFuel);
+        }
+
+        //זהה למתודה תדלוק רכב מלבד הפרמטר של סוג דלק....מה עושים???
+        public void ChargeVehicle(string i_PlateNumber, float i_MinutesToCharge)
+        {
+            if (!isExistsInGarage(i_PlateNumber))
             {
-                this.m_GarageVehicles.Add(
-                i_Vehicle.LicenseNumber, 
-                new VehicleInfo(i_Vehicle,i_OwnerName,i_OwnerPhone));
+                // todo : trow "No matching vehicle found"
             }
-            else
-            {
-                this.m_GarageVehicles[i_Vehicle.LicenseNumber].StateInGarage = VehicleInfo.eStateInGarage.Repairing;
-            }
+
+            Vehicle toFuel = this.m_GarageVehicles[i_PlateNumber].GetVehicle;
+            toFuel.EnergyManager.FillUpEnergy(i_MinutesToCharge);
         }
 
         private bool isExistsInGarage(string i_LicenseNumber)

@@ -2,7 +2,7 @@
 {
    public sealed class FuelEnergy : EnergyManager
    {
-       private eFuelType r_FuelType;
+       private eFuelType m_FuelType;
 
        public FuelEnergy()
        {
@@ -11,7 +11,7 @@
        public FuelEnergy(eFuelType i_FuelType, float i_MaxFuel) :
            base(i_MaxFuel)
        {
-           this.r_FuelType = i_FuelType;
+           this.m_FuelType = i_FuelType;
        }
 
        public float CurrentFuel
@@ -43,22 +43,22 @@
        {
            get
            {
-               return this.r_FuelType;
+               return this.m_FuelType;
            }
            set
            {
-               this.r_FuelType = value;
+               this.m_FuelType = value;
            }
        }
 
-       //public override void FillEnergy(float i_ToFill)
-       //{
-       //    AddFuel(i_ToFill);
-       //}
+        public override void FillUpEnergy(float i_ToFill)
+        {
+            AddFuel(i_ToFill, this.m_FuelType);
+        }
 
-       public void AddFuel(float i_ToFill, eFuelType i_FuelType)
+        public void AddFuel(float i_ToFill, eFuelType i_FuelType)
        {
-           if (i_FuelType != r_FuelType)
+           if (i_FuelType != m_FuelType)
            {
                // todo:  throw new ArgumentException(string.Format(@"Mismatch in fuel type. Type needed is {0}", r_FuelType));
            }

@@ -36,6 +36,11 @@
             }
         }
 
+        public override void FillUpEnergy(float i_MinutesToFill)
+        {
+            Charge(i_MinutesToFill / 60);
+        }
+
         public void Charge(float i_HoursToFill) 
         { 
             if (CurrentHoursLeft + i_HoursToFill > MaxBatteryHours || i_HoursToFill < 0)

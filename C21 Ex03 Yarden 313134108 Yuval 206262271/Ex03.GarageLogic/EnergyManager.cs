@@ -7,16 +7,11 @@
 
         protected EnergyManager()
         {
-
         }
 
         protected EnergyManager(float i_MaxCapacity)
         {
             this.m_MaxEnergyCapacity = i_MaxCapacity;
-        }
-
-        public virtual void FillEnergy(float i_ToFill)
-        {
         }
 
         public float MaxEnergyCapacity
@@ -49,6 +44,8 @@
         {
             return this.m_CurrentEnergy / this.m_MaxEnergyCapacity * 100;
         }
+
+        public abstract void FillUpEnergy(float i_ToFill);
     }
 }
 
