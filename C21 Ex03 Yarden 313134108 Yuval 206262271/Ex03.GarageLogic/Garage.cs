@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
@@ -17,7 +15,7 @@ namespace Ex03.GarageLogic
 
         public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_isExists)
         {
-            o_isExists = isExistsInGarage(i_Vehicle.LicensePlateNumber);
+            o_isExists = this.r_GarageVehicles.ContainsKey(i_Vehicle.LicensePlateNumber);
 
             if (!o_isExists)
             {
@@ -33,22 +31,14 @@ namespace Ex03.GarageLogic
 
         public void InitWheels(string i_LicensePlateNumber, string i_ManufacturerName, float i_CurrentAirPressure)
         {
-            if (!isExistsInGarage(i_LicensePlateNumber))
-            {
-                // todo : trow "No matching vehicle found"
-            }
-
+            checkIfVehicleExists(i_LicensePlateNumber);
             Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
             toInit.InitWheels(i_ManufacturerName, i_CurrentAirPressure);
         }
 
         public void InitEnergySource(string i_LicensePlateNumber, float i_CurrentEnergy)
         {
-            if (!isExistsInGarage(i_LicensePlateNumber))
-            {
-                throw new ArgumentException("No matching vehicle found");
-            }
-
+            checkIfVehicleExists(i_LicensePlateNumber);
             Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
             toInit.InitEnergySource(i_CurrentEnergy);
         }
@@ -80,21 +70,13 @@ namespace Ex03.GarageLogic
 
         public void ChangeVehicleState(VehicleInfo.eStateInGarage i_NewState, string i_LicensePlateNumber)
         {
-            if (!isExistsInGarage(i_LicensePlateNumber))
-            {
-                throw new ArgumentException("No matching vehicle found");
-            }
-
+            checkIfVehicleExists(i_LicensePlateNumber);
             this.r_GarageVehicles[i_LicensePlateNumber].StateInGarage = i_NewState;
         }
 
         public void FillUpAirPressureInWheels(string i_LicensePlateNumber)
         {
-            if (!isExistsInGarage(i_LicensePlateNumber))
-            {
-                throw new ArgumentException("No matching vehicle found");
-            }
-
+            checkIfVehicleExists(i_LicensePlateNumber);
             List<Wheel> wheelList = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle.Wheels;
 
             foreach(Wheel wheel in wheelList)
@@ -105,11 +87,7 @@ namespace Ex03.GarageLogic
 
         public void FuelVehicle(string i_LicensePlateNumber, FuelEnergy.eFuelType i_FuelType, float i_AmountToFuel)
         {
-            if (!isExistsInGarage(i_LicensePlateNumber))
-            {
-                throw new ArgumentException("No matching vehicle found");
-            }
-
+            checkIfVehicleExists(i_LicensePlateNumber);
             Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
             FuelEnergy toFill = toFuel.EnergyManager as FuelEnergy;
            
@@ -125,11 +103,7 @@ namespace Ex03.GarageLogic
 
         public void ChargeVehicle(string i_LicensePlateNumber, float i_MinutesToCharge)
         {
-            if (!isExistsInGarage(i_LicensePlateNumber))
-            {
-                throw new ArgumentException("No matching vehicle found");
-            }
-
+            checkIfVehicleExists(i_LicensePlateNumber);
             Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
             ElectricEnergy toFill = toFuel.EnergyManager as ElectricEnergy;
 
@@ -145,20 +119,19 @@ namespace Ex03.GarageLogic
 
         public string GetVehicleInfo(string i_LicensePlateNumber)
         {
-            if (!isExistsInGarage(i_LicensePlateNumber))
-            {
-                throw new ArgumentException("No matching vehicle found");
-            }
-
+            checkIfVehicleExists(i_LicensePlateNumber);
             VehicleInfo vehicleInfo = this.r_GarageVehicles[i_LicensePlateNumber];
             return vehicleInfo.ToString();
         }
 
-        private bool isExistsInGarage(string i_LicensePlateNumber)
+        private void checkIfVehicleExists(string i_LicensePlateNumber)
         {
-            return this.r_GarageVehicles.ContainsKey(i_LicensePlateNumber);
+            if(!this.r_GarageVehicles.ContainsKey(i_LicensePlateNumber))
+            {
+                throw new ArgumentException("No matching vehicle found");
+            }
         }
-
+        
         public class VehicleInfo
         {
             private Vehicle m_Vehicle;

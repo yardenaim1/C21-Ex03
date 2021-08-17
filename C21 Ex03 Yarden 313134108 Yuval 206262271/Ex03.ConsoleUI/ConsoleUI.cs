@@ -1,25 +1,88 @@
-﻿using System.Text;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
 {
+    using System.ComponentModel;
+    using System.Globalization;
     using System.Runtime.CompilerServices;
 
     public static class ConsoleUI
     {
+        private enum eMenuOptions
+        {
+            AddVehicle = 1,
+
+            DisplayLicenseNumbers,
+
+            ChangeVehicleState,
+
+            InflateWheels,
+
+            FuelVehicle,
+
+            ChargeVehicle,
+
+            ViewVehicleInfo,
+
+            Exit
+        }
+
+        private static readonly Garage sr_Garage = new Garage();
+
+        private static readonly string[] sr_MenuOfGarage =
+            {
+                @"--------------Welcome To The Garage !--------------
+
+Please chose one of the options:",
+@"{0}. Add vehicle ", 
+@"{0}. Display vehicles license numbers in the garage",
+@"{0}. Change the state of a vehicle", 
+@"{0}. Inflate the wheels of a vehicle to the maximum ",
+@"{0}. Fuel a vehicle ", 
+@"{0}. Charge a vehicle ", 
+@"{0}. View vehicle Information ", 
+@"{0}. Exit "
+            };
+
         public static void Run()
         {
-            Garage garage = new Garage();
-            Vehicle v1 = new Truck("BMW", "1234", new FuelEnergy(FuelEnergy.eFuelType.Soler, 222f));
-            bool isExist;
-            garage.AddVehicle(v1, "Yarden", "052-333",out isExist);
-            garage.InitWheels("1234","bla",20f);
-            garage.InitEnergySource("1234",40);
+            bool exit = false;
+            eMenuOptions chosenMenuOption;
 
-            string info = garage.GetVehicleInfo("1234");
-            Console.WriteLine(info);
+            while(!exit)
+            {
+                try
+                {
+                    displayMenu();
+                    if(!int.TryParse(Console.ReadLine(), out int userInput))
+                    {
+                        throw new FormatException("You must enter a number");
+                    }
 
+                    chosenMenuOption = (eMenuOptions)userInput;
+                    switch(chosenMenuOption)
+                    {
+                     
+                    }
+
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private static void displayMenu()
+        {
+            int optionNumber = 0;
+            foreach(string option in sr_MenuOfGarage)
+            {
+                Console.WriteLine(option, optionNumber++);
+            }
         }
     }
 }
