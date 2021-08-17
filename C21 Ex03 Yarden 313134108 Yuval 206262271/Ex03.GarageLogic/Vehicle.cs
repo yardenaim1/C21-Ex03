@@ -40,7 +40,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public virtual void InitEnergySource(float i_CurrentEnergy) // maybe abstract better?????
+        public virtual void InitEnergySource(float i_CurrentEnergy)
         {
         }
 

@@ -1,5 +1,8 @@
 ﻿namespace Ex03.GarageLogic
 {
+    using System;
+    using System.Text;
+
     public sealed class Wheel
     {
         private float m_MaxAirPressure = 0;
@@ -74,6 +77,22 @@
         public void FillAirPressureToMax()
         {
             this.m_CurrentAirPressure = this.m_MaxAirPressure;
+        }
+
+        public string[] GetParamsQuestions()
+        {
+            StringBuilder wheelsParamsQuestions = new StringBuilder();
+            string[] truckSeparateParamsQuestions = new string[2];
+
+            wheelsParamsQuestions.AppendFormat(
+                @"Please enter the manufacturer Name of the wheels:{0}", Environment.NewLine);
+            truckSeparateParamsQuestions[0] = wheelsParamsQuestions.ToString();
+            wheelsParamsQuestions.Clear();
+
+            wheelsParamsQuestions.AppendFormat(
+                @"Please enter the current PSI the wheels:{0}", Environment.NewLine);
+            truckSeparateParamsQuestions[1] = wheelsParamsQuestions.ToString();
+            return truckSeparateParamsQuestions;
         }
 
         public override string ToString()

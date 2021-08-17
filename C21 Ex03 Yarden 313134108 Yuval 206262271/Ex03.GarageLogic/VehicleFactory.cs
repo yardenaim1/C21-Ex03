@@ -13,6 +13,11 @@
             Truck
         }
 
+        public static string[] VehiclesTypes
+        {
+            get { return Enum.GetNames(typeof(eVehicleTypes)); }
+        }
+
         public static Vehicle CreateVehicle(eVehicleTypes i_VehicleType, string i_PlateNumber, string i_ModelName)
         {
             Vehicle newVehicle = null;

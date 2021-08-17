@@ -43,6 +43,12 @@ namespace Ex03.GarageLogic
             toInit.InitEnergySource(i_CurrentEnergy);
         }
 
+        public void InitOtherParams(string i_LicenseNumber, string i_AnotherAnswers)
+        {
+            Vehicle toInit = this.r_GarageVehicles[i_LicenseNumber].GetVehicle;
+            toInit.InitParams(i_AnotherAnswers);
+        }
+
         public string GetPlateNumbers(VehicleInfo.eStateInGarage? i_State)
         {
             StringBuilder plateNumbers = new StringBuilder(string.Empty);
@@ -131,7 +137,7 @@ namespace Ex03.GarageLogic
                 throw new ArgumentException("No matching vehicle found");
             }
         }
-        
+
         public class VehicleInfo
         {
             private Vehicle m_Vehicle;
