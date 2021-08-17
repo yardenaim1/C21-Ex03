@@ -7,10 +7,15 @@ namespace Ex03.GarageLogic
     public class Garage
     {
         private readonly Dictionary<string, VehicleInfo> r_GarageVehicles;
-
+ 
         public Garage()
         {
             this.r_GarageVehicles = new Dictionary<string, VehicleInfo>();
+        }
+
+        public VehicleInfo.eStateInGarage GetStateInGarage(string i_licensePlateNumber)
+        {
+            return r_GarageVehicles[i_licensePlateNumber].StateInGarage;
         }
 
         public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_isExists)
@@ -31,16 +36,24 @@ namespace Ex03.GarageLogic
 
         public void InitWheels(string i_LicensePlateNumber, string i_ManufacturerName, float i_CurrentAirPressure)
         {
-            checkIfVehicleExists(i_LicensePlateNumber);
-            Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
-            toInit.InitWheels(i_ManufacturerName, i_CurrentAirPressure);
+            if (CheckIfVehicleExists(i_LicensePlateNumber))
+            {
+                Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
+                toInit.InitWheels(i_ManufacturerName, i_CurrentAirPressure);
+            }
+
+            throw new ArgumentException("Vehicle requested is not electrically operated");
         }
 
         public void InitEnergySource(string i_LicensePlateNumber, float i_CurrentEnergy)
         {
-            checkIfVehicleExists(i_LicensePlateNumber);
-            Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
-            toInit.InitEnergySource(i_CurrentEnergy);
+            if(CheckIfVehicleExists(i_LicensePlateNumber))
+            {
+                Vehicle toInit = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
+                toInit.InitEnergySource(i_CurrentEnergy);
+            }
+
+            throw new ArgumentException("Vehicle requested is not electrically operated");
         }
 
         public void InitOtherParams(string i_LicenseNumber, string i_AnotherAnswers)
@@ -76,46 +89,16 @@ namespace Ex03.GarageLogic
 
         public void ChangeVehicleState(VehicleInfo.eStateInGarage i_NewState, string i_LicensePlateNumber)
         {
-            checkIfVehicleExists(i_LicensePlateNumber);
-            this.r_GarageVehicles[i_LicensePlateNumber].StateInGarage = i_NewState;
-        }
-
-        public void FillUpAirPressureInWheels(string i_LicensePlateNumber)
-        {
-            checkIfVehicleExists(i_LicensePlateNumber);
-            List<Wheel> wheelList = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle.Wheels;
-
-            foreach(Wheel wheel in wheelList)
+            if (CheckIfVehicleExists(i_LicensePlateNumber))
             {
-                wheel.FillAirPressureToMax();
-            }
-        }
-
-        public void FuelVehicle(string i_LicensePlateNumber, FuelEnergy.eFuelType i_FuelType, float i_AmountToFuel)
-        {
-            checkIfVehicleExists(i_LicensePlateNumber);
-            Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
-            FuelEnergy toFill = toFuel.EnergyManager as FuelEnergy;
-           
-            if(toFill != null)
-            {
-                toFill.AddFuel(i_FuelType, i_AmountToFuel);
-            }
-            else
-            {
-                throw new ArgumentException("Vehicle requested is not fuel operated");
-            }
-        }
-
-        public void ChargeVehicle(string i_LicensePlateNumber, float i_MinutesToCharge)
-        {
-            checkIfVehicleExists(i_LicensePlateNumber);
-            Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
-            ElectricEnergy toFill = toFuel.EnergyManager as ElectricEnergy;
-
-            if (toFill != null)
-            {
-                toFill.Charge(i_MinutesToCharge / 60);
+                if (this.r_GarageVehicles[i_LicensePlateNumber].StateInGarage == i_NewState)
+                {
+                    throw new ArgumentException("This is already the state of your vehicle");
+                }
+                else
+                {
+                    this.r_GarageVehicles[i_LicensePlateNumber].StateInGarage = i_NewState;
+                }
             }
             else
             {
@@ -123,19 +106,79 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public string GetVehicleInfo(string i_LicensePlateNumber)
+        public void FillUpAirPressureInWheels(string i_LicensePlateNumber)
         {
-            checkIfVehicleExists(i_LicensePlateNumber);
+            if(CheckIfVehicleExists(i_LicensePlateNumber))
+            {
+                List<Wheel> wheelList = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle.Wheels;
+
+                foreach(Wheel wheel in wheelList)
+                {
+                    wheel.FillAirPressureToMax();
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Vehicle requested is not electrically operated");
+            }
+        }
+
+        public void FuelVehicle(string i_LicensePlateNumber, FuelEnergy.eFuelType i_FuelType, float i_AmountToFuel)
+        {
+            if(CheckIfVehicleExists(i_LicensePlateNumber))
+            {
+                Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
+                FuelEnergy toFill = toFuel.EnergyManager as FuelEnergy;
+
+                if(toFill != null)
+                {
+                    toFill.AddFuel(i_FuelType, i_AmountToFuel);
+                }
+                else
+                {
+                    throw new ArgumentException("Vehicle requested is not fuel operated");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Vehicle requested is not electrically operated");
+            }
+        }
+
+        public void ChargeVehicle(string i_LicensePlateNumber, float i_MinutesToCharge)
+        {
+            if(CheckIfVehicleExists(i_LicensePlateNumber))
+            {
+
+
+                Vehicle toFuel = this.r_GarageVehicles[i_LicensePlateNumber].GetVehicle;
+                ElectricEnergy toFill = toFuel.EnergyManager as ElectricEnergy;
+
+                if(toFill != null)
+                {
+                    toFill.Charge(i_MinutesToCharge / 60);
+                }
+                else
+                {
+                    throw new ArgumentException("Vehicle requested is not electrically operated");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Vehicle requested is not electrically operated");
+            }
+        }
+
+            public string GetVehicleInfo(string i_LicensePlateNumber)
+        {
+            CheckIfVehicleExists(i_LicensePlateNumber);
             VehicleInfo vehicleInfo = this.r_GarageVehicles[i_LicensePlateNumber];
             return vehicleInfo.ToString();
         }
 
-        private void checkIfVehicleExists(string i_LicensePlateNumber)
+        public bool CheckIfVehicleExists(string i_LicensePlateNumber)
         {
-            if(!this.r_GarageVehicles.ContainsKey(i_LicensePlateNumber))
-            {
-                throw new ArgumentException("No matching vehicle found");
-            }
+            return this.r_GarageVehicles.ContainsKey(i_LicensePlateNumber);
         }
 
         public class VehicleInfo
