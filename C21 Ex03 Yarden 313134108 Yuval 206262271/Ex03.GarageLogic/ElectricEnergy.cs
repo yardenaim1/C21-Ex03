@@ -42,7 +42,7 @@
         { 
             if (CurrentHoursLeft + i_HoursToFill > MaxBatteryHours || i_HoursToFill < 0)
             {
-                throw new ValueOutOfRangeException(0, MaxBatteryHours - CurrentHoursLeft);
+                throw new ValueOutOfRangeException(0, (MaxBatteryHours - CurrentHoursLeft) / 60);
             }
 
             CurrentHoursLeft += i_HoursToFill;

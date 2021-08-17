@@ -73,7 +73,7 @@ Please chose one of the options:",
                         
                         case eMenuOptions.ChangeVehicleState:
                             {
-                                ChangeVehicleState();
+                                changeVehicleState();
                                 break;
                             }
                         
@@ -84,19 +84,19 @@ Please chose one of the options:",
                         
                         case eMenuOptions.FuelVehicle:
                             {
-                                FuelVehicle();
+                                fuelVehicle();
                                 break;
                             }
                         
                         case eMenuOptions.ChargeVehicle:
                             {
-                                ChargeVehicle();
+                                chargeVehicle();
                                 break;
                             }
                         
                         case eMenuOptions.ViewVehicleInfo:
                             {
-                                PrintVehicleInfo();
+                                printVehicleInfo();
                                 break;
                             }
                         
@@ -113,7 +113,6 @@ See you next time.");
                                 break;
                             }
                     }
-
                 }
                 catch (FormatException ex)
                 {
@@ -135,7 +134,7 @@ See you next time.");
                 }
                 finally
                 {
-                    ContinueIfKeyPressed();
+                    continueIfKeyPressed();
                 }
             }
         }
@@ -146,18 +145,14 @@ See you next time.");
                 out VehicleFactory.eVehicleTypes o_VehicleType,
                 out string o_LicenseNumber,
                 out string o_ModelName);
-            getOwnerInformation(out string o_OwnerName, out string o_OwnerPhone);
-
-
             Vehicle toAdd = VehicleFactory.CreateVehicle(o_VehicleType, o_LicenseNumber, o_ModelName);
-            getWheelsInformation(out string o_ManufacturerName, out float o_CurrentPSI, out float o_CurrentEnergyState);
+            getOwnerInformation(out string o_OwnerName, out string o_OwnerPhone);
+            getWheelsAndEnergyInformation(out string o_ManufacturerName, out float o_CurrentPSI, out float o_CurrentEnergyState);
             toAdd.InitWheels(o_ManufacturerName,o_CurrentPSI);
             toAdd.InitEnergySource(o_CurrentEnergyState);
             string[] anotherQuestions = toAdd.GetParamsQuestions();
             string anotherParams = getAnotherVehicleInformation(anotherQuestions);
             toAdd.InitParams(anotherParams);
-
-
             sr_Garage.AddVehicle(toAdd, o_OwnerName, o_OwnerPhone, out bool o_isExists);
             if (o_isExists)
             {
@@ -170,11 +165,11 @@ See you next time.");
             }
         }
 
-        private static void ChangeVehicleState()
+        private static void changeVehicleState()
         {
             string licensePlateNumber = getVehicleLicenseNumber();
 
-            if(sr_Garage.CheckIfVehicleExists(licensePlateNumber))
+            if(sr_Garage.IsVehicleExists(licensePlateNumber))
             {
                 string[] vehicleStates = Enum.GetNames(typeof(Garage.VehicleInfo.eStateInGarage));
                 int choiceNumber = 1;
@@ -198,11 +193,11 @@ See you next time.");
             }
         }
 
-        private static void FuelVehicle()
+        private static void fuelVehicle()
         {
             string licensePlateNumber = getVehicleLicenseNumber();
 
-            if (sr_Garage.CheckIfVehicleExists(licensePlateNumber))
+            if (sr_Garage.IsVehicleExists(licensePlateNumber))
             {
                 string[] fuelTypes = Enum.GetNames(typeof(FuelEnergy.eFuelType));
                 int choiseNumbering = 1;
@@ -212,6 +207,7 @@ See you next time.");
                 {
                     msg.AppendFormat(@"{0}. {1}{2}", choiseNumbering++, type, Environment.NewLine);
                 }
+
                 Console.WriteLine(msg);
                 FuelEnergy.eFuelType fuelType = getFuelType();
                 Console.WriteLine("Please enter amount of fuel to add - by liters: (and then press 'enter')");
@@ -232,11 +228,11 @@ See you next time.");
             }
         }
 
-        private static void ChargeVehicle()
+        private static void chargeVehicle()
         {
             string licensePlateNumber = getVehicleLicenseNumber();
 
-            if (sr_Garage.CheckIfVehicleExists(licensePlateNumber))
+            if (sr_Garage.IsVehicleExists(licensePlateNumber))
             {
                 Console.WriteLine("Please enter the amount in minutes to charge: (and then press enter)");
                 string userInput = Console.ReadLine();
@@ -255,14 +251,18 @@ See you next time.");
             }
         }
 
-        private static void PrintVehicleInfo()
+        private static void printVehicleInfo()
         {
             string licensePlateNumber = getVehicleLicenseNumber();
+            if(!sr_Garage.IsVehicleExists(licensePlateNumber))
+            {
+                throw new ArgumentException("No matching vehicle found");
+            }
 
             Console.WriteLine(sr_Garage.GetVehicleInfo(licensePlateNumber));
         }
 
-        private static void getWheelsInformation(out string o_ManufacturerName, out float o_CurrentPSI, out float o_EnergyState)
+        private static void getWheelsAndEnergyInformation(out string o_ManufacturerName, out float o_CurrentPSI, out float o_EnergyState)
         {
            Console.WriteLine(" Please enter the manufacturer name of the wheels:");
            o_ManufacturerName = Console.ReadLine();
@@ -277,7 +277,7 @@ For an  electric vehicle, please enter the time left (by hours) in the battery
 ");
             if (!float.TryParse(Console.ReadLine(), out o_EnergyState))
             {
-                throw new FormatException("The PSI should be a number");
+                throw new FormatException("The current state of energy should be a number");
             }
         }
 
@@ -311,7 +311,7 @@ For an  electric vehicle, please enter the time left (by hours) in the battery
             out string o_ModelName)
         {
             o_LicenseNumber = getVehicleLicenseNumber();
-            if (sr_Garage.CheckIfVehicleExists(o_LicenseNumber))
+            if (sr_Garage.IsVehicleExists(o_LicenseNumber))
             {
                 Garage.VehicleInfo.eStateInGarage currentState = sr_Garage.GetStateInGarage(o_LicenseNumber);
                 if(currentState != Garage.VehicleInfo.eStateInGarage.Repairing)
@@ -354,11 +354,10 @@ For an  electric vehicle, please enter the time left (by hours) in the battery
 
             Console.WriteLine("Please enter vehicle type:");
             Console.WriteLine(msg);
-            do
+            if(!int.TryParse(Console.ReadLine(), out result))
             {
-                Console.WriteLine("Invalid choice");
+                throw new FormatException("invalid vehicle type");
             }
-            while (!int.TryParse(Console.ReadLine(), out result));
 
             VehicleFactory.eVehicleTypes vehicleType = (VehicleFactory.eVehicleTypes)result;
 
@@ -374,7 +373,7 @@ For an  electric vehicle, please enter the time left (by hours) in the battery
             }
         }
 
-        private static void ContinueIfKeyPressed()
+        private static void continueIfKeyPressed()
         {
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
