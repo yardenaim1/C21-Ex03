@@ -13,16 +13,16 @@ namespace Ex03.GarageLogic
             this.r_GarageVehicles = new Dictionary<string, VehicleInfo>();
         }
 
-        public VehicleInfo.eStateInGarage GetStateInGarage(string i_licensePlateNumber)
+        public VehicleInfo.eStateInGarage GetStateInGarage(string i_LicensePlateNumber)
         {
-            return r_GarageVehicles[i_licensePlateNumber].StateInGarage;
+            return r_GarageVehicles[i_LicensePlateNumber].StateInGarage;
         }
 
-        public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_isExists)
+        public void AddVehicle(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhone, out bool o_IsExists)
         {
-            o_isExists = this.r_GarageVehicles.ContainsKey(i_Vehicle.LicensePlateNumber);
+            o_IsExists = this.r_GarageVehicles.ContainsKey(i_Vehicle.LicensePlateNumber);
 
-            if (!o_isExists)
+            if (!o_IsExists)
             {
                 this.r_GarageVehicles.Add(
                     i_Vehicle.LicensePlateNumber,

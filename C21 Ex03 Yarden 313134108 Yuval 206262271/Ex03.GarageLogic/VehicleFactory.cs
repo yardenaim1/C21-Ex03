@@ -1,7 +1,7 @@
-﻿namespace Ex03.GarageLogic
-{
-    using System;
+﻿using System;
 
+namespace Ex03.GarageLogic
+{
     public class VehicleFactory
     {
         public enum eVehicleTypes

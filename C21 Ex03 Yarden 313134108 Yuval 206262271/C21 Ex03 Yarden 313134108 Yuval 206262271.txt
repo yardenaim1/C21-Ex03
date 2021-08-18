@@ -1,0 +1,10 @@
+ ==========================Exercise Checking Report==========================
+Exercise No...........: 3
+First Student Details.: 313134108 - Yarden Yaakov Naim
+Second Student Details: 206262271 - Yuval Salomon
+Delivery Date.........: 18 - Aug - 2021
+Delivered In Delay....: No
+Delay Reason..........:
+Visual Studio Version.: 2019
+Comments..............: May need to set ConsoleUI as startup project
+========================End Exercise Checking Report========================

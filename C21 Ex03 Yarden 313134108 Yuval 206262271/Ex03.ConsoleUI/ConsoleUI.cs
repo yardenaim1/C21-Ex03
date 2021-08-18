@@ -112,14 +112,16 @@ See you next time.");
                 }
                 catch (FormatException ex)
                 {
-                    Console.WriteLine(@"{0}
-{1}", 
+                    Console.WriteLine(
+                        @"{0}
+{1}",
                         ex.Source,
                         ex.Message );
                 }
                 catch (ArgumentException ex)
                 {
-                    Console.WriteLine(@"{0}
+                    Console.WriteLine(
+                        @"{0}
 {1}",
                         ex.ParamName,
                         ex.Message);
@@ -269,7 +271,7 @@ For an  electric vehicle, please enter the time left (by hours) in the battery
             string answer = Console.ReadLine();
             Garage.VehicleInfo.eStateInGarage? stateToDisplay = null;
            
-            while (answer.ToUpper() != "Y" && answer.ToUpper() != "N")
+            while (answer != null && answer.ToUpper() != "Y" && answer.ToUpper() != "N")
             {
                 Console.WriteLine("Invalid choice. Please chose Y / N ");
                 answer = Console.ReadLine();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
 namespace Ex03.GarageLogic
@@ -99,7 +98,7 @@ namespace Ex03.GarageLogic
                 throw new ArgumentException("Invalid transport choice");
             }
 
-            m_IsDrivesHazardousMaterials = givenParams[0].ToLower() == "y" ? true : false;
+            m_IsDrivesHazardousMaterials = givenParams[0].ToLower() == "y";
 
             if (!float.TryParse(givenParams[1], out this.m_MaximumCarryingWeight))
             {

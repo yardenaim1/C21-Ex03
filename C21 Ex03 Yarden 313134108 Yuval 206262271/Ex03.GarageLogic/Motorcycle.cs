@@ -60,9 +60,9 @@ namespace Ex03.GarageLogic
 
             carParamsQuestions.AppendFormat(
                 @"Insert the license type of the motorcycle:{0}", Environment.NewLine);
-            string[] LicenseTypes = Enum.GetNames(typeof(eLicenseType));
+            string[] licenseTypes = Enum.GetNames(typeof(eLicenseType));
             int countTypes = 1;
-            foreach (string type in LicenseTypes)
+            foreach (string type in licenseTypes)
             {
                 carParamsQuestions.AppendFormat(@"{0} -{1}{2}", countTypes++, type, Environment.NewLine);
             }

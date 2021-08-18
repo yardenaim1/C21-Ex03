@@ -1,7 +1,5 @@
 ﻿namespace Ex03.GarageLogic
 {
-    using System;
-
     public class ElectricEnergy : EnergyManager
     {
         public ElectricEnergy()
@@ -32,6 +30,7 @@
             {
                 return MaxEnergyCapacity;
             }
+
             set
             {
                 this.m_MaxEnergyCapacity = value;

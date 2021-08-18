@@ -1,9 +1,9 @@
-﻿namespace Ex03.GarageLogic
-{
-    using System;
-    using System.Text;
+﻿using System;
+using System.Text;
 
-    public sealed class Wheel
+namespace Ex03.GarageLogic
+{
+   public sealed class Wheel
     {
         private float m_MaxAirPressure = 0;
         private string m_ManufacturerName = string.Empty;

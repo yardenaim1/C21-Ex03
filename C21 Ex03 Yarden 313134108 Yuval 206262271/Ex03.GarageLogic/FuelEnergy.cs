@@ -1,8 +1,8 @@
-﻿namespace Ex03.GarageLogic
-{
-    using System;
+﻿using System;
 
-    public sealed class FuelEnergy : EnergyManager
+namespace Ex03.GarageLogic
+{
+    public class FuelEnergy : EnergyManager
    {
        private eFuelType m_FuelType;
 
@@ -35,6 +35,7 @@
            {
                return MaxEnergyCapacity;
            }
+
            set
            {
                MaxEnergyCapacity = value;
